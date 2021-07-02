@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="message-list"></div>
+    <script>
+        const messageList = document.getElementById("message-list");
+
+        const socket = new WebSocket("ws://localhost:5000");
+
+        socket.onopen = ()=>{
+            // console.log("Соединение с бекендом установлено!");
+            socket.send("Привет с фронтенда!");
+        };
+
+        socket.onmessage = (e)=>{
+            messageList.insertAdjacentHTML("beforeend", `<p>${e.data}</p>`)
+        };
+    </script>
+</body>
+</html>

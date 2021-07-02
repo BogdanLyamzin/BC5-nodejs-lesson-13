@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="chat" class="chat">
+        <!-- <p class="you-chat-message">Всем привет!</p>
+        <p class="user-chat-message">Привет-привет!</p> -->
+    </div>
+    <div id="chat-message">
+        <form action="" id="chat-form">
+            <div class="form-group">
+                <textarea name="message" id="" cols="30" rows="3" placeholder="Новое сообщение"></textarea>
+            </div>
+
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+
+    <script>
+        const chat = document.getElementById("chat");
+        const chatForm = document.getElementById("chat-form");
+
+        const socket = new WebSocket("ws://localhost:5000");
+
+        socket.onopen = () => {
+            chat.insertAdjacentHTML("afterbegin", `<p class="enter-chat-message">Вы вошли в чат</p>`)
+        }
+
+        socket.onmessage = ({data})=>{
+            chat.insertAdjacentHTML("beforeend", `<p class="user-chat-message">${data}</p>`)
+        }
+
+        chatForm.addEventListener("submit", function(e){
+            e.preventDefault();
+            const message = this.querySelector("[name=message]").value;
+            socket.send(message);
+            chat.insertAdjacentHTML("beforeend", `<p class="you-chat-message">${message}</p>`)
+            this.reset();
+        });
+
+    </script>
+</body>
+</html>
